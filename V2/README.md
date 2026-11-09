@@ -24,3 +24,8 @@ Each lecture ends with a short recap, not a knowledge check. Quizzes and practic
 | | 3.4 Designing for resilience | Draft for review |
 | | 3.5 Customizing models and managing their lifecycle | Draft for review |
 | | 3.6 Demo: a model router with AppConfig (lab: `labs/lab-3.6-model-router`) | Draft for review |
+| 4. Data pipelines and vector stores | 4.1 Data quality and multimodal pipelines | Draft for review |
+| | 4.2 Formatting and improving inputs | Draft for review |
+| | 4.3 Choosing a vector store | Draft for review |
+| | 4.4 Metadata, scaling and keeping vectors fresh | Draft for review |
+| | 4.5 Demo: a Knowledge Base with an S3 source and incremental sync (lab: `labs/lab-4.5-knowledge-base`) | Draft for review |

@@ -12,3 +12,6 @@ Section 1 has no lab.
 | `lab-5.4-chunking-and-reranking` | 5.4 Demo: tuning chunking and adding a reranker |
 | `lab-6.4-prompt-flow` | 6.4 Demo: a versioned prompt in a Prompt Flow |
 | `lab-7.5-strands-mcp-agent` | 7.5 Demo: a Strands agent with an MCP tool |
+| `lab-9.5-streaming-chat` | 9.5 Demo: streaming chat with retries |
+| `lab-10.4-guardrail` | 10.4 Demo: a guardrail that blocks injection and masks PII |
+| `lab-12.4-genai-dashboard` | 12.4 Demo: a CloudWatch dashboard for tokens, latency and cost |

@@ -1,0 +1,11 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "model_id": "us.amazon.nova-micro-v1:0",
+    "price_in_per_1k": 0.000035,
+    "price_out_per_1k": 0.00014,
+    "latency_alarm_ms": 5000,
+    "alert_email": "",
+    "invocation_log_group": ""
+  }
+}

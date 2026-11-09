@@ -1,128 +1,101 @@
-# Lecture 2.3: Switching models without code changes — narration script
+# Lecture 2.3: The four architecture patterns — narration script
 
-Section 3, Designing solutions and choosing models. About 7 minutes. The same text is in the speaker notes of `lecture-2.3.pptx`.
+Section 2, GenAI on AWS essentials. About 6 minutes. The same text is in the speaker notes of `lecture-2.3.pptx`.
 
 > Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next.
 
-## 1. Switching models without code changes
+## 1. The four architecture patterns
 
-(About 40 seconds)
+(About 30 seconds)
 
-In the last lecture, / you chose a model. / But here's the thing. / That choice won't last. / New models arrive all the time, / prices change, / and old models get retired. [pause] So in this lecture, / I'll show you how to build your application / so you can switch models / **without** touching the code. / The tool for that is AWS AppConfig. [pause]
+Almost every generative AI application you'll build / is one of four patterns, / or a mix of them. [pause] In this lecture, / I'll show you those four patterns, / how to choose between them, / and the one comparison that comes up again and again. / RAG or fine-tuning. [pause]
 
-If I had to sum it up in one sentence, / it would be this. [pause] Keep the model choice in **configuration**, / not in code. [long pause]
+If I had to sum it up in one sentence, / it would be this. [pause] Start with the **simplest** pattern that works, / and only climb when you have to. [long pause]
 
-Transition: So, / what's actually wrong with hard-coding a model?
+Transition: So, / let's climb.
 
-## 2. A hard-coded model is a hidden cost
+## 2. Climb only as high as you need
 
-(About 1 min 30 seconds)
+(About 2 min)
 
-Let's compare the two ways of doing it. [pause]
-
-▶ CLICK
-
-On the left, / the hard-coded way. / The model ID and its settings live in your code. / So every time you want to try a new model, / or change the temperature, / you edit code, / test it / and redeploy. / And if five teams each call Bedrock their own way, / you end up with five different integrations to change.
-
+Think of the patterns as a ladder. / Each step up costs more effort, / more money, / and more maintenance. [pause]
 
 ▶ CLICK
 
-On the right, / the abstracted way. / Every application calls **one** internal API. / The model ID and the settings live in configuration. / So switching a model, / testing a new one / or rolling back / takes minutes, / not a release cycle.
+Step one, / **prompt engineering**. / You use the model as it is, / and you get better results by writing better instructions and examples. / It's quick, / it's cheap, / and you'd be surprised how far it gets you.
 
 
 ▶ CLICK
 
-And here's a phrase worth listening for in any scenario. / "Switch models **without** code changes." / Whenever you hear that, / think configuration, / and think AppConfig. [long pause]
-
-Transition: So, / what does that abstracted design look like?
-
-## 3. A model router in four parts
-
-(About 1 min 30 seconds)
-
-It's a simple pattern, / a model router, / and it has four parts. [pause]
-
-▶ CLICK
-
-First, / the **applications**. / They don't call Bedrock directly. / They call one internal endpoint.
+Step two, / **RAG**, / retrieval-augmented generation. / At question time, / you find the relevant pieces of your own documents, / and you put them in the prompt. / So the model answers from **your** data, / and it can cite where the answer came from.
 
 
 ▶ CLICK
 
-Second, / **API Gateway**. / It gives every app one stable contract, / and it handles authentication and throttling.
+Step three, / **fine-tuning**. / You train the model a bit further, / on your own labeled examples. / That changes how the model **behaves**. / Its tone, / its format, / its style.
 
 
 ▶ CLICK
 
-Third, / a **Lambda router**. / It reads the configuration, / works out which model to use for this request, / and calls it.
+And the top step, / **training a model from scratch**. / Huge data, / huge cost, / months of work. / For this course, / and for the exam, / it's almost never the right answer.
 
 
 ▶ CLICK
 
-And fourth, / **Bedrock**. / The router uses the Converse API, / so any supported model works / with the same request shape.
+And then there's **agents**. / An agent doesn't sit on the ladder. / It sits **beside** it. / An agent lets the model plan, / call tools / and take actions, / like looking up an order or opening a ticket. / And it can use any step of the ladder underneath. [pause] So the question to ask is simple. / Does the model just need to **answer**, / or does it need to **act**? [long pause]
+
+Transition: Now, / the two middle steps are the ones people mix up the most.
+
+## 3. What it knows, or how it answers
+
+(About 1 min 45 seconds)
+
+RAG or fine-tuning. / Here's how to tell them apart. [pause]
+
+▶ CLICK
+
+RAG solves a **knowledge** problem. / The model doesn't know your facts. / So look for the clues. / The data changes often. / You need citations. / You need answers grounded in your own documents. / All of those point to RAG.
 
 
 ▶ CLICK
 
-And underneath it all, / **AWS AppConfig**. / That's where the model ID and its settings live. / The router reads them at run time. / So when you change the configuration, / the very next request uses the new model. [long pause]
-
-Transition: But why AppConfig? / Why not just an environment variable?
-
-## 4. Why AppConfig, not an environment variable
-
-(About 1 min 30 seconds)
-
-It's a fair question, / and there are four good answers. [pause]
-
-▶ CLICK
-
-First, / it's **validated**. / You attach a JSON schema, / or a Lambda validator, / and a broken configuration is rejected / before it ever reaches production.
+Fine-tuning solves a **behavior** problem. / The model knows enough, / but it doesn't answer the way you want. / So the clues here are tone, / format, / style, / or a very specific task done the same way every time. / Those point to fine-tuning.
 
 
 ▶ CLICK
 
-Second, / it's **rolled out gradually**. / A deployment strategy releases the new configuration / to a share of your traffic, / over time. / Not to everyone at once.
+And here's the rule. / If the problem is **what** the model knows, / use RAG. / If the problem is **how** it answers, / fine-tune. [pause] And if a question asks for the **least** effort, / RAG almost always wins. / You don't retrain anything. / You just update the documents. [long pause]
+
+Transition: Let's try that on a few examples.
+
+## 4. Which pattern fits?
+
+(About 1 min 15 seconds)
+
+Here are four quick situations. / Try to answer before I do. [pause]
+
+▶ CLICK
+
+A support bot has to answer from product manuals / that change every week. / That's **RAG**. / Changing data, / and the answers come from documents.
 
 
 ▶ CLICK
 
-Third, / it's **rolled back automatically**. / You link a CloudWatch alarm to the deployment. / If errors go up while the change rolls out, / AppConfig puts the old configuration back on its own.
+All answers have to follow your brand's tone, / in a fixed format, / every single time. / Prompt engineering might get you there. / But if it doesn't, / that's **fine-tuning**. / It's a behavior problem.
 
 
 ▶ CLICK
 
-And fourth, / there's **no redeploy**. / Changing a Lambda environment variable / actually updates the function. / With AppConfig, / the function stays exactly as it is. / Only the configuration changes. [long pause]
-
-Transition: So, / what does that look like in code?
-
-## 5. The router reads, then calls
-
-(About 1 min 30 seconds)
-
-It's shorter than you might think. [pause]
-
-▶ CLICK
-
-At the top, / the configuration. / It's just JSON. / A default route, / with a model ID, / a temperature / and max tokens. / And a second route, / called summarize, / that uses a smaller, / cheaper model.
+An assistant has to check an order's status / and then issue a refund. / That's an **agent**. / It has to act, / not just answer.
 
 
 ▶ CLICK
 
-Then, / the router. / First, / it reads the configuration. / And that read is **cached**, / so you're not calling AppConfig on every single request.
-
-
-▶ CLICK
-
-Next, / it picks the route for this use case. / And if there isn't one, / it falls back to the default.
-
-
-▶ CLICK
-
-And finally, / one Converse call, / with the model ID and settings from that route. / Notice there isn't a single model ID in the code itself. [pause] And you'll build exactly this, / and switch models live, / in the demo in Lecture 2.6. [long pause]
+And a team wants to summarize meeting notes. / Just a good **prompt**. / Don't climb the ladder for that. [long pause]
 
 Transition: Let's wrap up.
 
-## 6. Recap
+## 5. Recap
 
 (About 45 seconds)
 
@@ -130,18 +103,18 @@ So, / let's bring it together. [pause]
 
 ▶ CLICK
 
-First, / a hard-coded model means a redeploy for every change. / So put the model ID and settings in configuration.
+First, / the ladder. / Prompt engineering, / then RAG, / then fine-tuning. / Training from scratch is almost never the answer.
 
 
 ▶ CLICK
 
-Second, / the model router. / Apps call API Gateway, / a Lambda router reads AppConfig, / and calls the chosen model through Converse.
+Second, / agents sit beside the ladder. / Use one when the model has to **act**, / not just answer.
 
 
 ▶ CLICK
 
-And third, / AppConfig over an environment variable. / It validates, / rolls out gradually, / rolls back on an alarm, / and needs no redeploy. [pause]
+And third, / RAG fixes what the model **knows**. / Fine-tuning fixes how it **answers**. / And RAG is usually the least effort. [pause]
 
-So, / back to our one sentence. [pause] Keep the model choice in **configuration**, / not in code. [long pause]
+So, / back to our one sentence. [pause] Start with the **simplest** pattern that works, / and only climb when you have to. [long pause]
 
-Transition: In the next lecture, / we'll make sure your application keeps answering / even when a model call fails.
+Transition: In the next lecture, / we'll stop talking and make our first Bedrock call. / Have your account ready.

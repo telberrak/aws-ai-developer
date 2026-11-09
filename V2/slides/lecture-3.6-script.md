@@ -1,6 +1,6 @@
-# Lecture 2.6: Demo: a model router with AppConfig — narration script
+# Lecture 3.6: Demo: a model router with AppConfig — narration script
 
-Section 3, Designing solutions and choosing models. About 10 minutes. The same text is in the speaker notes of `lecture-2.6.pptx`.
+Section 3, Designing solutions and choosing models. About 10 minutes. The same text is in the speaker notes of `lecture-3.6.pptx`.
 
 > Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next. [ON SCREEN: …] = what to show during the live demo.
 

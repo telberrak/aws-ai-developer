@@ -1,101 +1,78 @@
-# Lecture 1.3: The four architecture patterns — narration script
+# Lecture 1.3: Setting up your AWS account safely — narration script
 
-Section 2, GenAI on AWS essentials. About 6 minutes. The same text is in the speaker notes of `lecture-1.3.pptx`.
+Section 1, Welcome and exam strategy. About 4 to 5 minutes. The same text is in the speaker notes of `lecture-1.3.pptx`.
 
 > Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next.
 
-## 1. The four architecture patterns
+## 1. Setting up your AWS account safely
 
-(About 30 seconds)
+(About 40 seconds)
 
-Almost every generative AI application you'll build / is one of four patterns, / or a mix of them. [pause] In this lecture, / I'll show you those four patterns, / how to choose between them, / and the one comparison that comes up again and again. / RAG or fine-tuning. [pause]
+In this lecture, / we're going to get your AWS account ready for the demos and the labs. [pause]
 
-If I had to sum it up in one sentence, / it would be this. [pause] Start with the **simplest** pattern that works, / and only climb when you have to. [long pause]
+I'll keep it practical. / First, / six setup steps, / in the order I'd do them. / Then, / three simple rules / that keep your bill small. [pause]
 
-Transition: So, / let's climb.
+If I had to sum it up in one sentence, / it would be this. [pause] Set up **once**, / safely, / and you'll never worry about a surprise bill. / Keep that in mind, / because a surprise bill is the most common way people lose motivation. [long pause]
 
-## 2. Climb only as high as you need
+Transition: First, / the setup.
+
+## 2. Six steps before your first demo
 
 (About 2 min)
 
-Think of the patterns as a ladder. / Each step up costs more effort, / more money, / and more maintenance. [pause]
+There are six steps, / and I'll go through them in order. [pause]
 
 ▶ CLICK
 
-Step one, / **prompt engineering**. / You use the model as it is, / and you get better results by writing better instructions and examples. / It's quick, / it's cheap, / and you'd be surprised how far it gets you.
-
-
-▶ CLICK
-
-Step two, / **RAG**, / retrieval-augmented generation. / At question time, / you find the relevant pieces of your own documents, / and you put them in the prompt. / So the model answers from **your** data, / and it can cite where the answer came from.
-
+Step one: / use a **dedicated** account. / Either a fresh AWS account, / or a sandbox account in your organization. / Never run course work in a production account. / That's simply not an option.
 
 ▶ CLICK
 
-Step three, / **fine-tuning**. / You train the model a bit further, / on your own labeled examples. / That changes how the model **behaves**. / Its tone, / its format, / its style.
-
-
-▶ CLICK
-
-And the top step, / **training a model from scratch**. / Huge data, / huge cost, / months of work. / For this course, / and for the exam, / it's almost never the right answer.
-
+Step two: / stop using the root user. / Turn on multi-factor authentication for root, / then create an admin user through IAM Identity Center, / and use that from now on.
 
 ▶ CLICK
 
-And then there's **agents**. / An agent doesn't sit on the ladder. / It sits **beside** it. / An agent lets the model plan, / call tools / and take actions, / like looking up an order or opening a ticket. / And it can use any step of the ladder underneath. [pause] So the question to ask is simple. / Does the model just need to **answer**, / or does it need to **act**? [long pause]
-
-Transition: Now, / the two middle steps are the ones people mix up the most.
-
-## 3. What it knows, or how it answers
-
-(About 1 min 45 seconds)
-
-RAG or fine-tuning. / Here's how to tell them apart. [pause]
+Step three: / before you build anything, / set a **budget**. / Create an AWS Budgets alert at a low monthly amount you're comfortable with, / and turn on Cost Anomaly Detection. / And here's a bonus. / Cost Anomaly Detection is also something the exam can ask about.
 
 ▶ CLICK
 
-RAG solves a **knowledge** problem. / The model doesn't know your facts. / So look for the clues. / The data changes often. / You need citations. / You need answers grounded in your own documents. / All of those point to RAG.
-
-
-▶ CLICK
-
-Fine-tuning solves a **behavior** problem. / The model knows enough, / but it doesn't answer the way you want. / So the clues here are tone, / format, / style, / or a very specific task done the same way every time. / Those point to fine-tuning.
-
+Step four: / pick **one** Region, / and stay in it. / Choose one where Bedrock offers a wide choice of models. / That way, / everything you build in this course lives in one place.
 
 ▶ CLICK
 
-And here's the rule. / If the problem is **what** the model knows, / use RAG. / If the problem is **how** it answers, / fine-tune. [pause] And if a question asks for the **least** effort, / RAG almost always wins. / You don't retrain anything. / You just update the documents. [long pause]
-
-Transition: Let's try that on a few examples.
-
-## 4. Which pattern fits?
-
-(About 1 min 15 seconds)
-
-Here are four quick situations. / Try to answer before I do. [pause]
+Step five: / check your model access. / In the Bedrock console, / make sure the models we'll use are available to your account. / Some providers ask for a short use-case form the first time, / so do it now, / not in the middle of a demo.
 
 ▶ CLICK
 
-A support bot has to answer from product manuals / that change every week. / That's **RAG**. / Changing data, / and the answers come from documents.
-
-
-▶ CLICK
-
-All answers have to follow your brand's tone, / in a fixed format, / every single time. / Prompt engineering might get you there. / But if it doesn't, / that's **fine-tuning**. / It's a behavior problem.
-
+Step six: / install your tools. / The AWS CLI, / Python 3 / and the AWS CDK. / Then download the course files. [pause]
 
 ▶ CLICK
 
-An assistant has to check an order's status / and then issue a refund. / That's an **agent**. / It has to act, / not just answer.
+So, / how do you know you're ready? / Two checks. / First, / run "aws sts get-caller-identity", / and you should see your admin user. / Second, / send a short prompt to a model in the Bedrock playground, / and get an answer back. [pause] If both work, / you're ready. / And honestly, / that second check is your first GenAI integration. [long pause]
 
+Transition: Now, / let's make sure it stays cheap.
+
+## 3. Three rules that keep the course cheap
+
+(About 1 min)
+
+Three rules keep the whole course affordable. [pause]
 
 ▶ CLICK
 
-And a team wants to summarize meeting notes. / Just a good **prompt**. / Don't climb the ladder for that. [long pause]
+Rule one: / **tear down** the same day. / Every lab comes with a clean-up step. / Run it before you close your laptop, / even if you plan to continue tomorrow. / Rebuilding takes minutes. / Paying for idle resources overnight / is how most surprise bills happen.
 
-Transition: Let's wrap up.
+▶ CLICK
 
-## 5. Recap
+Rule two: / watch the **always-on** resources. / Most of what we build is serverless, / so it costs very little when it's idle. / The exceptions are provisioned throughput in Bedrock, / OpenSearch clusters / and SageMaker endpoints. / They bill by the hour, / whether you use them or not. / Whenever we use one, / I'll warn you.
+
+▶ CLICK
+
+Rule three: / check your spend **every week**. / Open Cost Explorer, / group by service, / and make sure nothing is growing that shouldn't be. [long pause]
+
+Transition: Okay, / let's wrap up this section.
+
+## 4. Lecture recap: three things to remember
 
 (About 45 seconds)
 
@@ -103,18 +80,16 @@ So, / let's bring it together. [pause]
 
 ▶ CLICK
 
-First, / the ladder. / Prompt engineering, / then RAG, / then fine-tuning. / Training from scratch is almost never the answer.
-
-
-▶ CLICK
-
-Second, / agents sit beside the ladder. / Use one when the model has to **act**, / not just answer.
-
+First, / use a dedicated account, / with an admin user and MFA on root. / Never production.
 
 ▶ CLICK
 
-And third, / RAG fixes what the model **knows**. / Fine-tuning fixes how it **answers**. / And RAG is usually the least effort. [pause]
+Second, / set a budget alert and Cost Anomaly Detection / before you build anything. / Then pick one Region, / and check your model access.
 
-So, / back to our one sentence. [pause] Start with the **simplest** pattern that works, / and only climb when you have to. [long pause]
+▶ CLICK
 
-Transition: In the next lecture, / we'll stop talking and make our first Bedrock call. / Have your account ready.
+And third, / tear down the same day, / watch the always-on resources, / and check your spend every week. [pause]
+
+So, / back to our one sentence. [pause] Set up **once**, / safely, / and you'll never worry about a surprise bill. [pause] And that's the end of Section 1. / You know what the exam tests, / how to read its questions, / and your account is ready. [long pause]
+
+Transition: In the next section, / we'll cover the GenAI essentials on AWS. / Foundation models, / tokens, / and how Amazon Bedrock works.

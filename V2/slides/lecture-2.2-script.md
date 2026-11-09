@@ -1,149 +1,149 @@
-# Lecture 2.2: Evaluating and choosing foundation models — narration script
+# Lecture 2.2: Amazon Bedrock, its APIs and pricing — narration script
 
-Section 3, Designing solutions and choosing models. About 8 minutes. The same text is in the speaker notes of `lecture-2.2.pptx`.
+Section 2, GenAI on AWS essentials. About 10 minutes. The same text is in the speaker notes of `lecture-2.2.pptx`.
 
 > Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next.
 
-## 1. Evaluating and choosing foundation models
+## 1. Amazon Bedrock, its APIs and pricing
 
-(About 30 seconds)
+(About 40 seconds)
 
-In the last lecture, / we said every design starts with three decisions. / In this one, / we zoom in on the first. / Which foundation model? [pause] I'll show you what to compare, / where the evidence comes from, / a simple method to choose, / and why bigger isn't always better. [pause]
+In this lecture, / we meet the service you'll use more than any other in this course. / Amazon Bedrock. [pause] I'll cover what Bedrock gives you, / the four ways to call a model, / how you pay for it, / and when SageMaker AI is the better fit. [pause]
 
-If I had to sum it up in one sentence, / it would be this. [pause] Benchmarks **shortlist** the models, / but **your own data** picks the winner. [long pause]
+If I had to sum it up in one sentence, / it would be this. [pause] **Start** with Bedrock, / and only move to SageMaker AI / when you have a **specific** reason. [long pause]
 
-Transition: So, / what do you actually compare?
+Transition: So, / what is Bedrock, / really?
 
-## 2. Six things decide the model
+## 2. Many foundation models, one serverless API
 
-(About 1 min 30 seconds)
+(About 2 min)
 
-Six things decide which model fits. [pause]
-
-▶ CLICK
-
-**Capability**. / How well it reasons, / writes code, / uses tools, / and handles the languages you need.
-
+Bedrock is a fully managed, / serverless service / that gives you foundation models through one API. / No servers. / No GPUs to manage. / You send a request, / you get an answer. [pause]
 
 ▶ CLICK
 
-**Modality**. / Text only, / or images and documents too? / Or do you actually need an embedding model?
+Inside, / you'll find models from several providers. / Amazon's own Nova and Titan models, / Anthropic, / Meta, / Mistral AI, / Cohere, / and more. / And the list keeps growing.
 
 
 ▶ CLICK
 
-**Context length**. / How much input and output fits in one request. / A long contract needs a long window.
+Those models come in different types. / Text and chat. / Multimodal. / Embeddings. / Image generation. / And rerankers, / which you'll meet when we talk about retrieval.
 
 
 ▶ CLICK
 
-**Latency**. / Time to the first token, / and tokens per second after that. / For chat, / that's what the user feels.
+Now, / before your first call works, / four things have to be in place. / First, / the **Region**. / Not every model is offered in every Region.
 
 
 ▶ CLICK
 
-**Price**. / Per input and output token, / or per model unit with Provisioned Throughput.
+Second, / **model access**. / The model has to be available to your account in the Bedrock console.
 
 
 ▶ CLICK
 
-And **limits**. / Which Regions it's in, / your quotas, / the provider's data policies, / and where the model is in its lifecycle. / A model that's about to be retired / isn't a good choice for a new project. [pause] Notice that the first five are about the model. / The sixth is about whether you can actually **use** it. [long pause]
-
-Transition: So, / where does the evidence for all of that come from?
-
-## 3. Benchmarks shortlist, your data decides
-
-(About 1 min 30 seconds)
-
-You've got four sources of evidence, / and each one has a catch. [pause]
-
-▶ CLICK
-
-**Public benchmarks**. / They tell you how a model does on standard tasks. / The catch? / Those tasks might look nothing like yours.
+Third, / **IAM**. / Your role needs permission to invoke the model.
 
 
 ▶ CLICK
 
-**Provider model cards**. / They give you the context length, / the modalities, / the limits / and the intended use. / But remember, / the provider wrote them.
+And fourth, / the right **ID**. / Some models are called with a plain model ID. / Others need an **inference profile** ID, / which we'll come back to in a minute. [pause] And if you ever get an access denied error, / it's almost always number two or number three. / Model access, / or IAM. [long pause]
+
+Transition: So, / once that's in place, / how do you actually call a model?
+
+## 3. Four ways to call a model
+
+(About 2 min)
+
+There are four ways to call a model in Bedrock, / and each one fits a different job. [pause]
+
+▶ CLICK
+
+**Converse**. / This is your default. / One request shape that works across models, / so you can switch from one model to another / without rewriting your code. / It also handles multi-turn chat, / system prompts / and tool use.
 
 
 ▶ CLICK
 
-**Bedrock model evaluation**. / This runs your prompts through the models / and scores the results, / either automatically, / with a model as the judge, / or with human reviewers. / The catch is that you need a good dataset.
+**ConverseStream**. / Same thing, / but the answer comes back token by token, / as it's written. / That's what makes a chat app feel fast, / because the user sees the first words straight away.
 
 
 ▶ CLICK
 
-And **your own test set**. / Real work, / with expected answers, / so you get quality, / latency / and cost on **your** problem. / It takes effort to build, / but it's the only evidence that really counts.
+**InvokeModel**. / The older, / lower-level call. / You send each provider's own native request body. / You'll still use it for things like embeddings, / and there's a streaming version too.
 
 
 ▶ CLICK
 
-So here's the rule. / Use benchmarks and model cards to **shortlist**. / Then let your own test set **pick the winner**. [long pause]
-
-Transition: Let's turn that into a method.
-
-## 4. Choose a model in five steps
-
-(About 1 min 30 seconds)
-
-Here's how to choose a model, / in five steps. [pause]
-
-▶ CLICK
-
-First, / **filter on hard limits**. / Modality, / context length, / Region, / and data rules. / Any model that fails one of these is out, / however good it is.
+And a **batch inference job**. / You put thousands of prompts in a file in S3, / start a job, / and the results land back in S3. / No one's waiting, / so it's cheaper.
 
 
 ▶ CLICK
 
-Second, / **shortlist two or three**. / Use the model cards and the public benchmarks. / Not ten. / Two or three.
+And one detail that trips people up. / There are two clients. / **bedrock-runtime** is for calling models, / so Converse, / InvokeModel, / all of that. / And **bedrock**, / without runtime, / is for managing things. / Listing models, / creating jobs, / setting up custom models. [long pause]
+
+Transition: Now, / let's talk about money.
+
+## 4. Four ways to pay, one way to pay less
+
+(About 2 min)
+
+You've got four main ways to pay for model calls, / plus one trick to pay less. [pause]
+
+▶ CLICK
+
+**On-demand**. / You pay per token, / with no commitment. / This is the default, / and it's right for variable or unpredictable traffic.
 
 
 ▶ CLICK
 
-Third, / **run your test set** on each of them. / Score the quality, / and record the latency and the tokens.
+**Batch**. / Discounted compared with on-demand, / but it's offline. / You use it when nobody's waiting for the answer. / Overnight summaries, / classifying a big backlog, / that kind of thing.
 
 
 ▶ CLICK
 
-Fourth, / **compare the cost per task**. / Not per token. / Per answer, / at your real volume. / A cheaper model that needs twice the tokens / can end up costing more.
+**Provisioned Throughput**. / You buy model units by the hour, / with a commitment, / and you get guaranteed capacity. / It's for steady, / high-volume traffic. / And some custom models / can **only** be served this way.
 
 
 ▶ CLICK
 
-And fifth, / **decide, / and revisit**. / New models arrive all the time. / So keep that test set, / and re-run it whenever a new candidate shows up. [long pause]
-
-Transition: And when you compare, / don't assume the biggest model wins.
-
-## 5. Bigger isn't always better
-
-(About 1 min 30 seconds)
-
-Bigger isn't always better. / Match the size of the model to the task. [pause]
-
-▶ CLICK
-
-Classification, / routing / and extraction. / A **small**, / fast model is usually enough. / It's a narrow task at high volume, / so low cost matters most.
+**Cross-Region inference**. / Here, / you call an **inference profile** / instead of a single model in a single Region. / Bedrock then routes your request across several Regions. / So you get more capacity for bursts, / and better resilience. / And that's why some models ask for an inference profile ID.
 
 
 ▶ CLICK
 
-Chat over retrieved documents. / A **mid-size** model usually does the job, / because the context already carries the facts.
+And the trick. / **Prompt caching**. / If many requests start with the same long prefix, / like a big system prompt or a document, / Bedrock can cache it. / You pay less for those tokens, / and you get the answer faster. [long pause]
+
+Transition: So, / Bedrock covers a lot. / But when should you use SageMaker AI instead?
+
+## 5. Default to Bedrock, unless you need control
+
+(About 2 min 30 seconds)
+
+Let's compare them side by side, / on four points. [pause]
+
+▶ CLICK
+
+**Infrastructure**. / Bedrock is serverless. / SageMaker AI runs on instances / that you choose and manage.
 
 
 ▶ CLICK
 
-Complex reasoning, / planning / and code. / That's where a **large** model earns its price, / because quality matters more than cost.
+**Models**. / Bedrock gives you a curated catalog. / SageMaker AI lets you run almost anything. / Models from JumpStart, / or a model you've built yourself.
 
 
 ▶ CLICK
 
-And search and retrieval for RAG. / That's not a chat model at all. / It's an **embedding** model, / because you need vectors, / not generated text.
+**Customization**. / Bedrock gives you managed fine-tuning. / SageMaker AI gives you full control. / Your own training code, / techniques like LoRA, / your own pipelines.
 
 
 ▶ CLICK
 
-And here's a pattern you'll see a lot. / A **small** model looks at each request first / and routes it. / The **large** model only answers the hard cases. / You get most of the quality, / at a fraction of the cost. [long pause]
+**Pricing**. / Bedrock charges per token. / SageMaker AI charges per instance-hour, / whether the instance is busy or not.
+
+
+▶ CLICK
+
+So here's the rule. / Default to **Bedrock**. / It's the lowest operational effort. / And only move to SageMaker AI when you have a real reason. / The model isn't in Bedrock. / You need control over the hardware or the container. / You run your own fine-tuning pipeline and model registry. / Or a small, / task-specific model is simply cheaper to run. [pause] And one more thing. / If you've fine-tuned a model somewhere else, / **Custom Model Import** lets you bring it into Bedrock, / and still call it serverlessly. [long pause]
 
 Transition: Let's wrap up.
 
@@ -155,18 +155,18 @@ So, / let's bring it together. [pause]
 
 ▶ CLICK
 
-First, / compare six things. / Capability, / modality, / context length, / latency, / price, / and limits.
+First, / Bedrock is serverless access to many foundation models. / Before your first call, / check the Region, / model access, / IAM / and the right model or inference profile ID.
 
 
 ▶ CLICK
 
-Second, / filter on hard limits, / shortlist two or three, / run your own test set, / and compare the cost per task, / not per token.
+Second, / Converse is your default call, / ConverseStream for live chat, / InvokeModel for native requests like embeddings, / and batch jobs for offline work.
 
 
 ▶ CLICK
 
-And third, / right-size the model. / Small for narrow, high-volume tasks, / large only for the hard cases. [pause]
+And third, / pay on-demand for variable traffic, / batch when nobody's waiting, / Provisioned Throughput for steady volume, / and cross-Region inference for bursts. / And use SageMaker AI only when you need the control. [pause]
 
-So, / back to our one sentence. [pause] Benchmarks **shortlist** the models, / but **your own data** picks the winner. [long pause]
+So, / back to our one sentence. [pause] **Start** with Bedrock, / and only move to SageMaker AI / when you have a **specific** reason. [long pause]
 
-Transition: But once you've picked a model, / you'll want to change it later. / So in the next lecture, / we'll see how to switch models / without touching your code, / with AWS AppConfig.
+Transition: In the next lecture, / we'll look at the four architecture patterns / you'll build with these models.

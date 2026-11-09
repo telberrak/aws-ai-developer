@@ -1,12 +1,12 @@
-# Lecture 1.4 demo: your first Bedrock call
+# Lecture 2.4 demo: your first Bedrock call
 
-This is the code for the demo in Lecture 1.4. You send the same Converse request two ways: from Python with boto3, then from the AWS CLI.
+This is the code for the demo in Lecture 2.4. You send the same Converse request two ways: from Python with boto3, then from the AWS CLI.
 
 **Cost:** a few cents in on-demand tokens. **Teardown:** nothing to delete. This lab creates no resources.
 
 ## Before you start
 
-- Your account is set up as in Lecture 0.3.
+- Your account is set up as in Lecture 1.3.
 - Model access is on in the Bedrock console for the model you'll use, in your Region.
 - Your role can call `bedrock:InvokeModel` (Converse uses the same permission).
 

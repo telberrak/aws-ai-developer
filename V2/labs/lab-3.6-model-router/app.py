@@ -1,4 +1,4 @@
-"""Lecture 2.6 demo: a model router whose target model lives in AWS AppConfig.
+"""Lecture 3.6 demo: a model router whose target model lives in AWS AppConfig.
 
 Deploy:  cdk deploy -c modelId=<model-id-or-inference-profile-id>
 """

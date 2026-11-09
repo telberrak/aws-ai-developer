@@ -1,6 +1,6 @@
-# Lecture 2.5: Customizing models and managing their lifecycle — narration script
+# Lecture 3.5: Customizing models and managing their lifecycle — narration script
 
-Section 3, Designing solutions and choosing models. About 10 minutes. The same text is in the speaker notes of `lecture-2.5.pptx`.
+Section 3, Designing solutions and choosing models. About 10 minutes. The same text is in the speaker notes of `lecture-3.5.pptx`.
 
 > Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next.
 
@@ -22,7 +22,7 @@ There are three ways to change what a model does, / and they differ in what you 
 
 ▶ CLICK
 
-**Fine-tuning**. / You train on **labeled** examples. / A prompt, / and the answer you want. / Hundreds or thousands of them. / You use it to teach a task, / a format, / or a style. / This is the behavior fix we talked about in Lecture 1.3.
+**Fine-tuning**. / You train on **labeled** examples. / A prompt, / and the answer you want. / Hundreds or thousands of them. / You use it to teach a task, / a format, / or a style. / This is the behavior fix we talked about in Lecture 2.3.
 
 
 ▶ CLICK

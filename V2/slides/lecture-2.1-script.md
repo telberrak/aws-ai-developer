@@ -1,249 +1,143 @@
-# Lecture 2.1: From requirements to a reviewed architecture — narration script
+# Lecture 2.1: Models, tokens and inference parameters — narration script
 
-Section 3, Designing solutions and choosing models. About 12 to 13 minutes. The same text is in the speaker notes of `lecture-2.1.pptx`.
+Section 2, GenAI on AWS essentials. About 8 minutes. The same text is in the speaker notes of `lecture-2.1.pptx`.
 
 > Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next.
 
-## 1. From requirements to a reviewed architecture
+## 1. Models, tokens and inference parameters
 
-(About 45 seconds)
+(About 40 seconds)
 
-Welcome to Section 3. [pause] This is where the real design work begins. / In this lecture, / I'll show you how to go from a business need / to an architecture you can defend. / We'll turn requirements into design choices, / prove the idea with a proof of concept, / and then review the design against AWS best practices. [pause]
+Welcome to Section 2. [pause] Before we touch a single AWS service, / we need a shared vocabulary. / So in this lecture, / I'll cover three things. / What a foundation model actually is, / what tokens and the context window mean for you, / and the settings that control how a model answers. [pause]
 
-If I had to sum it up in one sentence, / it would be this. [pause] Let the **requirements** pick the design, / and let **evidence** confirm it. [long pause]
+If I had to sum it up in one sentence, / it would be this. [pause] **Everything** a model does, / you pay for, / limit / and tune / in **tokens**. [long pause]
 
-Transition: So, / what does the business actually need?
+Transition: So, / what exactly is a foundation model?
 
-## 2. Requirements come in two kinds
-
-(About 1 min 30 seconds)
-
-Every requirement you'll ever get / falls into one of two kinds. [pause]
-
-▶ CLICK
-
-The first kind is **what** the system must do. / Answer questions about company policies. / Summarize customer calls. / Draft replies. / Take actions in other systems. / These are the features.
-
-
-▶ CLICK
-
-The second kind is **how well** it must do it. / How fast. / How accurate. / How much each request can cost. / How many users at once. / Where the data is allowed to live, / and whether every answer has to be auditable.
-
-
-▶ CLICK
-
-And here's the thing. / The second list is the one that decides between designs. / Two solutions can both answer questions about policies. / But only one of them meets a two-second latency target / at a cost you can afford. [pause] So in a scenario, / always look for the **how well** words. / They're often hiding in the last sentence. [long pause]
-
-Transition: Once you know the requirements, / you have to make three decisions.
-
-## 3. Every design answers three questions
+## 2. One pre-trained model, many tasks
 
 (About 1 min 30 seconds)
 
-Every GenAI design answers the same three questions. [pause]
+A foundation model is a large model / that's been trained once, / on a huge amount of broad data. [pause]
 
 ▶ CLICK
 
-First, / **which model?** / You choose on capability, / modality, / context length, / latency / and price.
-
-
-▶ CLICK
-
-Second, / **which pattern?** / Prompting, / RAG, / fine-tuning, / agents, / or a mix of them. / That's the ladder from Lecture 1.3.
+First, / it's **pre-trained**. / Somebody else already spent the money and the months training it. / You don't train it. / You **use** it. / And that's the whole idea. / One model, / many tasks.
 
 
 ▶ CLICK
 
-Third, / **how is it deployed?** / Bedrock on-demand, / batch, / or Provisioned Throughput, / or an endpoint on SageMaker AI.
+Second, / you **adapt** it to your job. / And you've got four ways to do that. / You can write a better prompt. / You can give it your own documents at question time, / which is retrieval. / You can let it call tools. / Or you can fine-tune it on your examples. / Keep those four in mind, / because they come back in Lecture 2.3, / and pretty much everywhere after that.
 
 
 ▶ CLICK
 
-And one rule ties the three together. / Pick the **simplest managed** option / that meets **every** requirement. / Not most of them. / Every one. [long pause]
+And third, / they come in different **types**. / Text and chat models. / Multimodal models, / which read images and documents as well as text. / And embedding models, / which don't write anything at all. / They turn text into a list of numbers, / so you can search by meaning. / You'll use those a lot when we get to RAG. [long pause]
 
-Transition: So, / how do the requirements point to those choices?
+Transition: Now, / every one of these models reads and writes in the same unit. / Tokens.
 
-## 4. Requirements point to design choices
+## 3. Tokens are the unit of cost and limits
 
 (About 2 min)
 
-Certain clues in a requirement / point straight to a design. / Here are six you'll see again and again. [pause]
+Let's talk about tokens, / because this is where cost and limits come from. [pause]
 
 ▶ CLICK
 
-The answers have to come from company documents. / That points to **RAG**, / and on AWS, / that usually means Bedrock Knowledge Bases.
-
-
-▶ CLICK
-
-The system has to take actions in other systems. / Book a meeting, / open a ticket, / update a record. / That's an **agent** with tools.
+A token is a word, / or a piece of a word. / A short common word is usually one token. / A long or rare word gets split into several. / As a rough rule, / a token is about three quarters of an English word. / But don't learn that number by heart. / It changes from model to model.
 
 
 ▶ CLICK
 
-Every answer needs a consistent brand voice or format. / Start with **prompt templates**. / And if that isn't enough, / fine-tune.
+Now, / the **context window** is the total number of tokens the model can handle in one request. / And here's the thing most people miss. / It's **shared**. / Your system prompt takes a slice.
 
 
 ▶ CLICK
 
-Chat has to feel fast. / Think **streaming**, / a smaller model, / and caching.
+The conversation history takes a slice.
 
 
 ▶ CLICK
 
-Millions of documents have to be processed, / and nobody's waiting. / That's **batch inference**.
+Any documents you retrieve take a slice. / And in a RAG application, / that's often the biggest one.
 
 
 ▶ CLICK
 
-And the data must stay private. / That means **VPC endpoints**, / encryption with KMS, / and Guardrails. [pause] Now, / these are heuristics, / not laws. / So always check your choice against **every** requirement in the scenario. [long pause]
-
-Transition: And whatever you choose, / most designs end up with the same backbone.
-
-## 5. Most designs share one backbone
-
-(About 1 min 30 seconds)
-
-Most GenAI applications on AWS / share one shape, / in four layers. [pause]
-
-▶ CLICK
-
-At the front, / the **client**. / A web app, / a mobile app, / or a chat interface.
+And the answer itself / has to fit in what's left. [pause] So if your answers suddenly get cut short in a long conversation, / this is usually why. / The window is full.
 
 
 ▶ CLICK
 
-Then the **API layer**. / API Gateway, / with authentication through Cognito. / This gives every client one stable, secure entry point.
+And then, / **cost**. / With on-demand pricing, / you pay per token. / Input tokens at one price, / output tokens at another, / and output usually costs more. / Limits and prices are different for every model, / so always check the current numbers in the console. [pause] Here's why that matters. / Every design choice you'll see in this course, / shorter prompts, / smaller chunks, / caching, / is really a choice about **tokens**. [long pause]
 
+Transition: So, / we know what goes in. / Now let's control what comes out.
 
-▶ CLICK
-
-Then **orchestration**. / Lambda for simple flows, / Step Functions when there are several steps, / retries / or a human in the loop.
-
-
-▶ CLICK
-
-And at the back, / the **model and the data**. / Bedrock, / Knowledge Bases, / and Guardrails.
-
-
-▶ CLICK
-
-And across every layer, / the same four services. / IAM for permissions, / KMS for encryption, / CloudWatch for monitoring, / and CloudTrail for the audit trail. [pause] So when you see a new design, / look for this backbone first. / Then look at what's different. [long pause]
-
-Transition: Now, / before you build all of that for real, / you prove it works.
-
-## 6. Five steps to a useful PoC
+## 4. Five settings that shape every answer
 
 (About 2 min)
 
-A proof of concept answers three questions. / Is it feasible? / Is it fast enough? / And is it worth the money? / Here's how to run one, / in five steps. [pause]
+There are five settings you'll see on almost every model call. / They're called inference parameters. [pause]
 
 ▶ CLICK
 
-First, / **define success**. / Quality, / latency / and cost targets, / agreed with the business **before** you start. / Otherwise, / any result can look like a success.
-
-
-▶ CLICK
-
-Second, / **build a test set**. / Somewhere between fifty and two hundred real examples, / each with the answer you expect.
+**Temperature**. / This controls randomness. / Close to zero, / the model picks the most likely words, / so you get focused, / repeatable answers. / Higher, / and you get more variety.
 
 
 ▶ CLICK
 
-Third, / **try models** in Bedrock. / The playground first, / then Converse calls in code, / so you can run the whole test set.
+**Top P**. / This one limits the choice of next word / to the most likely ones, / until their probabilities add up to P. / So a top P of 0.9 / means the model ignores the unlikely tail.
 
 
 ▶ CLICK
 
-Fourth, / **measure**. / Score the answer quality, / record the latency, / and log the tokens for every request. / Then multiply the cost per request / by your real daily volume.
+**Top K**. / Similar idea, / but it keeps a fixed number of candidate words. / And here's a detail worth knowing. / Not every model supports it. / In the Converse API, / it doesn't have its own field. / You pass it through **additional model request fields**.
 
 
 ▶ CLICK
 
-And fifth, / **decide**. / Go, / change the design, / or stop. / And stopping is a perfectly good outcome. / It's much cheaper to stop now than after launch.
+**Max tokens**. / The ceiling on the length of the answer. / Set it too low, / and the answer stops mid-sentence. / And when that happens, / the response tells you the stop reason was max tokens.
 
 
 ▶ CLICK
 
-And watch out for the classic mistakes. / Cherry-picked examples that hide the messy cases. / No baseline from the current process. / Ignoring what happens at ten thousand users. / And leaving security for later. [long pause]
-
-Transition: The PoC proves it works. / But is the design **well built**?
-
-## 7. Six pillars, applied to GenAI
-
-(About 1 min 30 seconds)
-
-That's what the AWS Well-Architected Framework is for. / It has six pillars, / and each one means something specific for GenAI. [pause]
-
-▶ CLICK
-
-**Operational excellence**. / Versioned prompts, / monitoring, / and evaluation built into your CI/CD pipeline.
+**Stop sequences**. / Text that tells the model to stop as soon as it writes it. / Handy when you want exactly one item, / or one section, / and nothing more.
 
 
 ▶ CLICK
 
-**Security**. / Least privilege, / guardrails, / PII protection, / and private access to the model.
+And one tip. / Change temperature **or** top P. / Not both at the same time. / If you change both, / you can't tell which one made the difference. [long pause]
+
+Transition: So, / which values should you actually use?
+
+## 5. Match the temperature to the job
+
+(About 1 min 15 seconds)
+
+It really comes down to the job. [pause]
+
+▶ CLICK
+
+**Low** temperature, / close to zero, / for anything that has a right answer. / Extraction. / Classification. / Writing SQL or JSON. / And RAG, / where you want the model to stick to the documents.
 
 
 ▶ CLICK
 
-**Reliability**. / Handling throttling, / retries, / cross-Region inference, / and fallbacks. / We'll go deep on that in Lecture 2.4.
+**Moderate** temperature / for a normal chat assistant. / Natural, / but not wandering off.
 
 
 ▶ CLICK
 
-**Performance efficiency**. / The right model size, / streaming, / and caching.
+**Higher** temperature / for creative work. / Marketing ideas, / names, / brainstorming.
 
 
 ▶ CLICK
 
-**Cost optimization**. / Token budgets, / batch, / smaller models, / and prompt caching.
-
-
-▶ CLICK
-
-And **sustainability**. / Don't run an oversized model / for a job a small one can do. / Every wasted token is wasted energy too. [long pause]
-
-Transition: And for GenAI, / AWS adds a lens on top of those pillars.
-
-## 8. Review the design in the Well-Architected Tool
-
-(About 1 min 45 seconds)
-
-The **Generative AI Lens** adds GenAI-specific questions to the framework. / Is generative AI even the right fit? / Which model, / on what evidence? / Prompting, / RAG / or fine-tuning? / And you run the review in the **Well-Architected Tool**, / in five steps. [pause]
-
-▶ CLICK
-
-First, / **define the workload**. / Its name, / Region, / environment / and owners.
-
-
-▶ CLICK
-
-Second, / **apply the lenses**. / The core framework, / plus the Generative AI Lens.
-
-
-▶ CLICK
-
-Third, / **answer the questions**. / You tick the best practices you already follow, / and add notes.
-
-
-▶ CLICK
-
-Fourth, / **read the risks**. / The tool flags high and medium risks, / and links each one to guidance.
-
-
-▶ CLICK
-
-Fifth, / **plan and track**. / You build an improvement plan, / and save a milestone so you can see progress over time. / And the tool itself costs nothing.
-
-
-▶ CLICK
-
-And once a design passes, / turn it into **standard components**. / Shared infrastructure-as-code templates, / approved prompts in Prompt Management, / one shared Guardrails configuration, / and the lens as the checklist every new design passes. / That way, / every team's app starts consistent, / secure / and reviewable. [long pause]
+And when something goes wrong, / two quick fixes. / If answers are **cut off**, / raise max tokens, / or free up room in the context window. / If answers are **inconsistent** / from one run to the next, / lower the temperature. [pause] You'll see that kind of problem a lot, / both in real projects and in exam questions. [long pause]
 
 Transition: Let's wrap up.
 
-## 9. Recap
+## 6. Recap
 
 (About 45 seconds)
 
@@ -251,18 +145,18 @@ So, / let's bring it together. [pause]
 
 ▶ CLICK
 
-First, / separate **what** the system must do / from **how well** it must do it. / The how-well requirements decide between designs.
+First, / a foundation model is pre-trained once, / and you adapt it with prompts, / retrieval, / tools / or fine-tuning.
 
 
 ▶ CLICK
 
-Second, / every design answers three questions. / Which model, / which pattern, / and how it's deployed. / Pick the simplest managed option that meets every requirement.
+Second, / tokens are the unit for everything. / The context window is shared by the prompt, / the history, / the documents / and the answer. / And you pay per input and output token.
 
 
 ▶ CLICK
 
-And third, / prove it with a PoC that has targets agreed up front, / then review it with the Well-Architected Framework / and the Generative AI Lens. [pause]
+And third, / temperature, / top P, / top K, / max tokens / and stop sequences / shape the answer. / Low temperature when there's a right answer, / higher when you want ideas. [pause]
 
-So, / back to our one sentence. [pause] Let the **requirements** pick the design, / and let **evidence** confirm it. [long pause]
+So, / back to our one sentence. [pause] Everything a model does, / you pay for, / limit / and tune / in **tokens**. [long pause]
 
-Transition: In the next lecture, / we'll zoom in on the most important choice of all. / The foundation model.
+Transition: In the next lecture, / we'll meet Amazon Bedrock. / How you call these models on AWS, / and how you pay for them.

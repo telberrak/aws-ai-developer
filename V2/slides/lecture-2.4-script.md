@@ -1,129 +1,126 @@
-# Lecture 2.4: Designing for resilience — narration script
+# Lecture 2.4: Demo: your first Bedrock call — narration script
 
-Section 3, Designing solutions and choosing models. About 8 minutes. The same text is in the speaker notes of `lecture-2.4.pptx`.
+Section 2, GenAI on AWS essentials. About 6 minutes. The same text is in the speaker notes of `lecture-2.4.pptx`.
 
-> Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next.
+> Delivery marks: **bold** = stress · / = brief pause · [pause] = 1 second · [long pause] = 2 to 3 seconds. ▶ CLICK = advance to the next build. "Transition:" is the spoken bridge into what comes next. [ON SCREEN: …] = what to show during the live demo.
 
-## 1. Designing for resilience
+## 1. Your first Bedrock call
 
-(About 40 seconds)
+(About 30 seconds)
 
-Sooner or later, / a model call **will** fail. / The question is what your users see when it does. [pause] In this lecture, / I'll cover the four ways a model call fails, / and three tools to handle them. / Cross-Region inference, / the circuit breaker, / and graceful degradation. [pause]
+Enough theory. / In this lecture, / we make our first call to a model on Bedrock. / First from Python, / then from the AWS CLI. / And we'll play with the settings you met in Lecture 2.1. [pause]
 
-If I had to sum it up in one sentence, / it would be this. [pause] Plan for failure, / so your users get an answer, / even when the model doesn't. [long pause]
+If I had to sum it up in one sentence, / it would be this. [pause] **One** Converse request, / and you've built your first GenAI integration. [long pause]
 
-Transition: So, / how does a model call actually fail?
+Transition: Here's the plan.
 
-## 2. Four ways a model call fails
+## 2. Four steps, about five minutes
+
+(About 45 seconds)
+
+Four steps, / and the code is in the lab folder for this lecture, / so you can follow along. [pause]
+
+▶ CLICK
+
+First, / set two variables. / Your Region, / and the ID of the model you want to call. / You copy that from the Bedrock console. / And if the console says the model needs an inference profile, / use the profile ID instead.
+
+
+▶ CLICK
+
+Second, / run the Python script / and read the answer.
+
+
+▶ CLICK
+
+Third, / change the temperature, / and see what happens to the answers.
+
+
+▶ CLICK
+
+And fourth, / make the exact same call from the AWS CLI. [long pause]
+
+Transition: Before we run it, / let's read the code.
+
+## 3. One call, five parts
 
 (About 1 min 30 seconds)
 
-There are four ways, / and you'll want to recognize each one. [pause]
+The whole script is short. / Let's go through it, / piece by piece. [pause]
 
 ▶ CLICK
 
-First, / **throttling**. / You send more requests than your quota allows, / and Bedrock answers with a throttling error. / This is the most common one by far.
-
-
-▶ CLICK
-
-Second, / a **regional disruption**. / A service issue in one Region / affects every call you make there.
+First, / the client. / Notice it's **bedrock-runtime**, / because we're calling a model, / not managing one.
 
 
 ▶ CLICK
 
-Third, / **limited availability**. / The model isn't offered in your Region, / or there just isn't enough capacity for it right now.
+Then, / the messages. / A system prompt that sets the role, / "you are a concise AWS tutor", / and one user message with our question. / That's the same shape for every model in Bedrock.
 
 
 ▶ CLICK
 
-And fourth, / a **slow or failing model**. / Latency suddenly spikes, / or one model keeps returning errors. [pause] Each of these needs a slightly different answer. / So let's go through the tools. [long pause]
-
-Transition: First, / the one that handles capacity for you.
-
-## 3. Let Bedrock spread the load
-
-(About 1 min 30 seconds)
-
-That's cross-Region inference. / You met it briefly in Lecture 1.2. / Now let's see how it works. [pause]
-
-▶ CLICK
-
-Your application makes the same call as always. / The only difference is the ID. / Instead of a plain model ID, / it uses an **inference profile** ID.
+Next, / the inference config. / Temperature and max tokens, / the settings you already know.
 
 
 ▶ CLICK
 
-The inference profile defines a set of Regions. / For example, / several Regions within one geography.
+Then, / one call. / client dot converse, / with the model ID, / the system prompt, / the messages / and the config.
 
 
 ▶ CLICK
 
-And Bedrock routes each request / to a Region in that set that has capacity. / So you get more throughput for bursts, / and better resilience, / with **no** change to your code.
+And finally, / we read the response. / The answer text is in output, / message, / content. / And just as useful, / **usage** tells you how many input and output tokens you just paid for, / and **stop reason** tells you why the model stopped. [long pause]
 
+Transition: OK, / let's run it.
 
-▶ CLICK
-
-But there's one thing you must check. / Your request may be processed in any Region in the profile. / So make sure those Regions meet your **data residency** rules. / If the data must stay in one country, / that matters. [long pause]
-
-Transition: Now, / what if a model keeps failing, / again and again?
-
-## 4. Stop calling what is failing
-
-(About 1 min 30 seconds)
-
-That's where the circuit breaker comes in. / It's a simple idea. / Stop calling what's failing. / And it has three states. [pause]
-
-▶ CLICK
-
-**Closed**. / This is normal. / Everything's healthy, / and every request goes to your primary model.
-
-
-▶ CLICK
-
-**Open**. / Too many failures in a row. / So the breaker opens, / and for a while, / requests skip the primary completely, / and go to a fallback instead. / You stop wasting time and money on calls that will fail.
-
-
-▶ CLICK
-
-**Half-open**. / After a wait, / the breaker lets a few test requests through to the primary. / If they work, / it closes again. / If they fail, / it opens again.
-
-
-▶ CLICK
-
-And how do you build it on AWS? / A common way is Step Functions for the flow, / and a DynamoDB table / to hold the state of the circuit. [long pause]
-
-Transition: And when everything else fails, / what then?
-
-## 5. Plan what happens when all else fails
+## 4. Run it, and read what comes back
 
 (About 2 min)
 
-Then you degrade **gracefully**. / You plan, / in advance, / what happens at each level. / Think of it as a ladder, / and you only go down a step / when the one above it fails. [pause]
+[ON SCREEN: switch to the terminal, in the lab folder, with the two variables already set] [pause]
+
+I'll run the script with the question, / "What is RAG?" [pause]
 
 ▶ CLICK
 
-Step one, / **retry with backoff**. / Wait a little, / then try again, / and wait a bit longer each time. / That handles short bursts of throttling.
-
-
-▶ CLICK
-
-Step two, / **fail over**. / Use a cross-Region inference profile, / another Region, / or another model.
+And there's our answer. / Now look underneath it. / The stop reason is **end turn**. / That means the model finished on its own. / And here's the usage. / Input tokens, / output tokens, / total. / That's your bill for this call. / A fraction of a cent.
 
 
 ▶ CLICK
 
-Step three, / use a **smaller model**. / It's faster, / cheaper / and more available. / The answer may be a bit less capable, / but it's still an answer.
+Now, / let's play with the temperature. [ON SCREEN: run "Suggest a name for a GenAI study group" three times at 0.9, then three times at 0] [pause] At 0.9, / every answer is different. / At zero, / they're almost identical. / That's exactly what we said in Lecture 2.1. / Low temperature for a right answer, / higher for ideas. [pause] And watch this. / If I set max tokens to twenty, / the answer stops mid-sentence, / and the stop reason now says **max tokens**.
 
 
 ▶ CLICK
 
-Step four, / **serve from cache**. / For common questions, / you may already have a good answer you generated earlier.
+And finally, / the same call from the CLI. [ON SCREEN: run the aws bedrock-runtime converse command from the lab README] [pause] Same request, / same response shape. / Output, / stop reason, / usage. / So whatever language you use, / the API is the same. [long pause]
+
+Transition: And if it doesn't work for you, / here's what to check.
+
+## 5. Four errors, four fixes
+
+(About 45 seconds)
+
+Four errors cover almost everything you'll hit. [pause]
+
+▶ CLICK
+
+**Access denied**. / Model access isn't on for this model in this Region, / or your IAM role can't invoke it.
 
 
 ▶ CLICK
 
-And step five, / **tell the user**. / A clear message, / and a way forward. / Put the request in a queue, / or hand it to a human. [pause] What you never want / is a blank screen, / or a cryptic error. [long pause]
+A **validation** error that mentions on-demand throughput or an inference profile. / Use the model's inference profile ID instead of the plain model ID.
+
+
+▶ CLICK
+
+**Resource not found**. / The model isn't offered in your Region. / Pick another model, / or another Region.
+
+
+▶ CLICK
+
+And **throttling**. / Wait a few seconds and try again. / On-demand quotas are per account and per Region. [pause] And the good news. / This lab creates nothing, / so there's nothing to tear down. [long pause]
 
 Transition: Let's wrap up.
 
@@ -135,18 +132,18 @@ So, / let's bring it together. [pause]
 
 ▶ CLICK
 
-First, / model calls fail in four ways. / Throttling, / a regional disruption, / limited availability, / or a slow or failing model.
+First, / you need four things in place. / The Region, / model access, / IAM, / and the right model or inference profile ID.
 
 
 ▶ CLICK
 
-Second, / cross-Region inference spreads the load with an inference profile, / and the circuit breaker stops calling a model that keeps failing.
+Second, / one Converse call takes a system prompt, / messages / and an inference config. / And it's the same shape for every model.
 
 
 ▶ CLICK
 
-And third, / degrade gracefully. / Retry, / fail over, / go smaller, / serve from cache, / and tell the user. [pause]
+And third, / always read the response's stop reason and usage. / They tell you why the answer ended, / and what it cost. [pause]
 
-So, / back to our one sentence. [pause] Plan for failure, / so your users get an answer, / even when the model doesn't. [long pause]
+So, / back to our one sentence. [pause] **One** Converse request, / and you've built your first GenAI integration. [pause] And that's the end of Section 2. / You've got the vocabulary, / you know Bedrock, / and you've made your first call. [long pause]
 
-Transition: In the next lecture, / we'll look at customizing models, / and managing them from first version to retirement.
+Transition: In the next section, / we start the real work. / Designing a solution, / and choosing the right model for it.

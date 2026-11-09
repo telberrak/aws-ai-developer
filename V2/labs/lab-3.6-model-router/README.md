@@ -1,6 +1,6 @@
-# Lecture 2.6 demo: model router with AppConfig
+# Lecture 3.6 demo: model router with AppConfig
 
-This is the code for the demo in Lecture 2.6. You deploy an API whose target model lives in AWS AppConfig, then switch models live without changing or redeploying any code.
+This is the code for the demo in Lecture 3.6. You deploy an API whose target model lives in AWS AppConfig, then switch models live without changing or redeploying any code.
 
 **Cost:** a few cents in model calls. API Gateway, Lambda and AppConfig usage in this lab fit in typical free tiers. **Teardown:** `cdk destroy`.
 
@@ -12,7 +12,7 @@ This is the code for the demo in Lecture 2.6. You deploy an API whose target mod
 
 ## Before you start
 
-- Your account is set up as in Lecture 0.3, including the AWS CDK. Bootstrap the account and Region once with `cdk bootstrap`.
+- Your account is set up as in Lecture 1.3, including the AWS CDK. Bootstrap the account and Region once with `cdk bootstrap`.
 - Model access is on in Bedrock for two models, so you have something to switch between. Note their model IDs, or inference profile IDs if the console says the model needs one.
 
 ## Steps

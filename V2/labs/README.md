@@ -6,5 +6,5 @@ Section 1 has no lab.
 
 | Folder | Lecture |
 |---|---|
-| `lab-1.4-first-bedrock-call` | 1.4 Demo: your first Bedrock call |
-| `lab-2.6-model-router` | 2.6 Demo: a model router with AppConfig |
+| `lab-2.4-first-bedrock-call` | 2.4 Demo: your first Bedrock call |
+| `lab-3.6-model-router` | 3.6 Demo: a model router with AppConfig |

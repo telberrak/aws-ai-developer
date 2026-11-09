@@ -1,4 +1,4 @@
-"""Lecture 1.4 demo: your first Amazon Bedrock call with the Converse API.
+"""Lecture 2.4 demo: your first Amazon Bedrock call with the Converse API.
 
 Usage:
     export AWS_REGION=<your-region>

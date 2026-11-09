@@ -1,7 +1,0 @@
-{
-  "app": "python3 app.py",
-  "context": {
-    "primaryModelId": "[in-region-model-id]",
-    "fallbackModelId": "[cross-region-inference-profile-id]"
-  }
-}

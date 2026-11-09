@@ -37,3 +37,12 @@ Each lecture ends with a short recap, not a knowledge check. Quizzes and practic
 | | 6.2 Prompt governance and QA | Draft for review |
 | | 6.3 Advanced techniques and Prompt Flows | Draft for review |
 | | 6.4 Demo: a versioned prompt in a Prompt Flow (lab: `labs/lab-6.4-prompt-flow`) | Draft for review |
+| 7. Agents and tools | 7.1 What makes an agent, and multi-agent systems | Draft for review |
+| | 7.2 Orchestration and safeguards | Draft for review |
+| | 7.3 Model coordination and human in the loop | Draft for review |
+| | 7.4 Tool design and MCP servers | Draft for review |
+| | 7.5 Demo: a Strands agent with an MCP tool (lab: `labs/lab-7.5-strands-mcp-agent`) | Draft for review |
+| 8. Deployment and enterprise integration | 8.1 Hosting choices and right-sizing | Draft for review |
+| | 8.2 Integrating with legacy systems and microservices | Draft for review |
+| | 8.3 Secure access, data residency and hybrid | Draft for review |
+| | 8.4 CI/CD for GenAI and the GenAI gateway | Draft for review |

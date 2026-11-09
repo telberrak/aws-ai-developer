@@ -1,0 +1,6 @@
+{
+  "ORD-1001": {"customer": "Ana", "item": "Noise-cancelling headphones", "status": "delivered", "delivered_on": "2026-10-28", "price": 249.0},
+  "ORD-1002": {"customer": "Ben", "item": "Mechanical keyboard", "status": "shipped", "shipped_on": "2026-11-06", "carrier": "UPS", "price": 129.0},
+  "ORD-1003": {"customer": "Chloe", "item": "Standing desk", "status": "processing", "price": 499.0},
+  "ORD-1004": {"customer": "Dev", "item": "USB-C dock", "status": "delivered", "delivered_on": "2026-08-15", "price": 89.0}
+}

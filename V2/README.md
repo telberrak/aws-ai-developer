@@ -29,3 +29,7 @@ Each lecture ends with a short recap, not a knowledge check. Quizzes and practic
 | | 4.3 Choosing a vector store | Draft for review |
 | | 4.4 Metadata, scaling and keeping vectors fresh | Draft for review |
 | | 4.5 Demo: a Knowledge Base with an S3 source and incremental sync (lab: `labs/lab-4.5-knowledge-base`) | Draft for review |
+| 5. Retrieval for RAG | 5.1 Chunking strategies and choosing embeddings | Draft for review |
+| | 5.2 Vector search, hybrid search and reranking | Draft for review |
+| | 5.3 Query expansion, decomposition and consistent retrieval | Draft for review |
+| | 5.4 Demo: tuning chunking and adding a reranker (lab: `labs/lab-5.4-chunking-and-reranking`) | Draft for review |

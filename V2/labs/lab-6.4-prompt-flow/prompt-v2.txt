@@ -1,0 +1,8 @@
+You help a support team triage tickets.
+Read the ticket and return four lines, and keep the whole answer under 50 words:
+Summary: one sentence.
+Sentiment: positive, neutral or negative.
+Urgency: low, medium or high.
+Next action: what the agent should do first.
+
+Ticket: {{ticket}}

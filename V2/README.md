@@ -33,3 +33,7 @@ Each lecture ends with a short recap, not a knowledge check. Quizzes and practic
 | | 5.2 Vector search, hybrid search and reranking | Draft for review |
 | | 5.3 Query expansion, decomposition and consistent retrieval | Draft for review |
 | | 5.4 Demo: tuning chunking and adding a reranker (lab: `labs/lab-5.4-chunking-and-reranking`) | Draft for review |
+| 6. Prompt engineering and governance | 6.1 Instruction frameworks, Prompt Management and conversation context | Draft for review |
+| | 6.2 Prompt governance and QA | Draft for review |
+| | 6.3 Advanced techniques and Prompt Flows | Draft for review |
+| | 6.4 Demo: a versioned prompt in a Prompt Flow (lab: `labs/lab-6.4-prompt-flow`) | Draft for review |

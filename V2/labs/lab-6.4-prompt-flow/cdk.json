@@ -1,0 +1,6 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "model_id": "amazon.nova-micro-v1:0"
+  }
+}
